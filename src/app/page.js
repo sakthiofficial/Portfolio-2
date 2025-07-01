@@ -11,9 +11,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import profileImage from "../../public/images/profile_photo.png";
 import aboutImage from "../../public/images/enhanced 1.png";
 import schoolIcon from "../../public/images/educationIcons/school.png";
+import collegeIcon from "../../public/images/educationIcons/college.png";
 import courseIcon from "../../public/images/educationIcons/course.png";
+
 import workIcon from "../../public/images/educationIcons/work.png";
 import { InputField } from "@/components/global/fields";
+import axios from "axios";
 
 function getResposiveDimentions(xs, md, lg) {
   return {
@@ -24,9 +27,9 @@ function getResposiveDimentions(xs, md, lg) {
 }
 const themeColors = {
   primary: "#917DB0",
-  projectViewCtaBtn: "#9CB07D",
+  projectViewCtaBtn: "#765E9C",
   textColor: "#48454afc",
-  surpriseColor: "#9CB07D",
+  surpriseColor: "#8ec23e",
 };
 const titleStyle = {
   fontSize: getResposiveDimentions("44px", "62px"),
@@ -35,7 +38,7 @@ const titleStyle = {
   color: "#48454afc",
 };
 const themeFontSize = {
-  secondaryCta: "16px",
+  secondaryCta: "14px",
 };
 const ctaBtnStyle = {};
 export default function Page() {
@@ -66,7 +69,7 @@ function Hero() {
         backgroundColor: "transparent",
         textCase: "lowercase",
         onHover: {
-          transform: "translateY(-1rem)",
+          transform: "translateY(-0.1rem)",
         },
       },
       {
@@ -76,7 +79,7 @@ function Hero() {
         backgroundColor: "transparent",
         textCase: "lowercase",
         onHover: {
-          transform: "translateY(-1rem)",
+          transform: "translateY(-0.1rem)",
         },
       },
       {
@@ -86,7 +89,7 @@ function Hero() {
         backgroundColor: "transparent",
         textCase: "lowercase",
         onHover: {
-          transform: "translateY(-1rem)",
+          transform: "translateY(-0.1rem)",
         },
       },
     ],
@@ -108,6 +111,20 @@ function Hero() {
         },
       },
     },
+  };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     setIsScrolled(window.scrollY > 50);
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
+  const scrollToView = (target) => {
+    const section = document.getElementById(target?.replace(/\s/g, ""));
+    console.log(section);
+
+    section?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
   return (
     <Grid
@@ -194,6 +211,7 @@ function Hero() {
                 height: "2rem",
                 "&:hover": btn?.onHover,
               }}
+              onClick={() => scrollToView(btn.text)}
             >
               {" "}
               {btn.text}
@@ -207,6 +225,7 @@ function Hero() {
             ...navList?.navCtaBtn?.style,
             position: "relative",
           }}
+          onClick={() => scrollToView("contact")}
         >
           {navList?.navCtaBtn?.text}
           <Box
@@ -274,10 +293,12 @@ function Project() {
   return (
     <Grid
       container
-      className="project scroll-snap-on"
+      className="project"
+      component={"section"}
+      id="projects"
       sx={{
         justifyContent: "center",
-        maxHeight: "100vh",
+        // maxHeight: getResposiveDimentions("none", "100vh"),
         position: "relative",
       }}
     >
@@ -294,7 +315,7 @@ function Project() {
           // boxShadow: "0px 0px 25px #0000002b",
           border: "1px solid",
           scale: "1",
-          height: getResposiveDimentions("65%", "70%"),
+          height: getResposiveDimentions("auto", "70vh"),
           overflowY: "scroll",
           paddingBottom: "10rem !important",
           gap: "2rem",
@@ -326,6 +347,8 @@ function Header({ title, subTitle }) {
         flexDirection: "column",
         alignItems: "center",
         height: "fit-content",
+        paddingTop: "4rem",
+        paddingBottom: "2rem",
       }}
     >
       <Typography component="p" sx={{ fontSize: "14px", color: "#695e5e" }}>
@@ -585,86 +608,98 @@ function AboutSection() {
     {
       category: "work",
       icon: workIcon,
-
       qualificationList: [
         {
           education: "Urbanrise",
           degree: "Software Developer",
-          institude: "Urbanrise",
+          institude: "Urbanrise, Chennai",
           experience:
-            "Experienced software developer adept in Excel automation, real-time Facebook lead dashboard development, integration with lead calling applications, and dynamic landing page creation. Proficient in adapting UI based on URL parameters, delivering professional growth through diverse projects.",
+            "Contributed to multiple high-impact applications including Facebook lead integration with telecalling CRM, agency lead tracking systems, and a real-time performance monitoring portal. Enhanced landing pages with UTM-based dynamic UI and maintained scalable web tools to streamline marketing operations.",
           stared: {
             year: "2023",
-            month: "june",
+            month: "June",
           },
           ended: {
-            year: "2024",
-            month: "may",
+            year: "Present",
+            month: "",
           },
         },
       ],
     },
     {
-      category: "Course",
+      category: "course",
       icon: courseIcon,
-
       qualificationList: [
         {
-          education: "Full Stack Developer",
+          education: "Full Stack Development",
           degree: "Full Stack Developer",
-          institude: "Guvi",
+          institude: "Guvi Institute",
           experience:
-            "That was a such wonderfuull experience i know this sound like iam makeing overdo but what if the thing i told that will true means it will be regert you soif you feel something you do or you regret",
+            "Completed hands-on training in full stack development, covering frontend (React, HTML/CSS), backend (Node.js, Express), databases (MongoDB), and deployment techniques. Built full-stack projects and participated in live problem-solving sessions.",
           stared: {
-            year: "2002",
-            month: "june",
+            year: "2022",
+            month: "January",
           },
           ended: {
-            year: "2008",
-            month: "dec",
+            year: "2022",
+            month: "December",
+          },
+        },
+        {
+          education: "AWS Cloud Essentials",
+          degree: "AWS Certified Developer (Course)",
+          institude: "Guvi Institute",
+          experience:
+            "Gained foundational knowledge of AWS services and deployment strategies, focusing on S3, Lambda, API Gateway, and DynamoDB. Built and deployed microservices using serverless architecture.",
+          stared: {
+            year: "2022",
+            month: "June",
+          },
+          ended: {
+            year: "2022",
+            month: "August",
           },
         },
       ],
     },
     {
-      category: "work",
-      icon: schoolIcon,
-
+      category: "college",
+      icon: collegeIcon,
       qualificationList: [
         {
-          education: "college",
-          degree: "b.sc computer science",
-          institude: "",
+          education: "B.Sc Computer Science",
+          degree: "Bachelor of Science",
+          institude: "Thiruvalluvar University",
           experience:
-            "That was a such wonderfuull experience i know this sound like iam makeing overdo but what if the thing i told that will true means it will be regert you soif you feel something you do or you regret",
+            "Focused on core computer science fundamentals including data structures, algorithms, DBMS, and web technologies. Participated in coding competitions and developed foundational web projects during academic tenure.",
           stared: {
-            year: "2002",
-            month: "june",
+            year: "2019",
+            month: "June",
           },
           ended: {
-            year: "2008",
-            month: "dec",
+            year: "2022",
+            month: "April",
           },
         },
       ],
     },
     {
-      category: "work",
+      category: "school",
       icon: schoolIcon,
       qualificationList: [
         {
-          education: "college",
-          degree: "b.sc computer science",
-          institude: "",
+          education: "Class XII",
+          degree: "Higher Secondary Education",
+          institude: "SVMHS School, Ambur",
           experience:
-            "That was a such wonderfuull experience i know this sound like iam makeing overdo but what if the thing i told that will true means it will be regert you soif you feel something you do or you regret",
+            "Completed higher secondary education with a focus on computer science and mathematics. Developed early interest in technology and participated in basic programming workshops.",
           stared: {
-            year: "2002",
-            month: "june",
+            year: "2017",
+            month: "June",
           },
           ended: {
-            year: "2008",
-            month: "dec",
+            year: "2019",
+            month: "March",
           },
         },
       ],
@@ -674,38 +709,236 @@ function AboutSection() {
     <Grid
       container
       xs={12}
+      component={"section"}
+      id="about"
       sx={{
-        alignItems: "flex-start",
+        alignItems: "center",
         justifyContent: "space-around",
         position: "relative",
       }}
-      className="scroll-snap-on"
+      // className="scroll-snap-on"
     >
       <Header title="About me" subTitle="my introduction" />
       <Grid
-        container
         item
+        container
         xs={12}
         lg={6}
         sx={{
           alignItems: getResposiveDimentions("end", "center"),
-          position: "relative",
-          height: getResposiveDimentions("80%", "fit-content"),
         }}
       >
-        {(categoryList || []).map((categoryItem, i) => (
-          <AboutCard
-            category={categoryItem?.category}
-            qualificationList={categoryItem?.qualificationList}
-            connectionLine={categoryList.length - 1 > i}
-            index={i}
-            qualificationSelectedIndex={qualificationSelectedIndex}
-            setQualificationSelectedIndex={setQualificationSelectedIndex}
-            isLastCategory={i === categoryList.length - 1}
-            icon={categoryItem?.icon}
-            itemLength={categoryList?.length}
-          />
-        ))}
+        <Grid
+          container
+          item
+          xs={12}
+          sx={{
+            gap: "2rem",
+          }}
+        >
+          <Grid
+            item
+            container
+            xs={12}
+            sx={{
+              justifyContent: "space-between",
+              position: "relative",
+            }}
+          >
+            {(categoryList || []).map((categoryItem, i) => (
+              <AboutCard
+                category={categoryItem?.category}
+                qualificationList={categoryItem?.qualificationList}
+                connectionLine={categoryList.length - 1 > i}
+                index={i}
+                qualificationSelectedIndex={qualificationSelectedIndex}
+                setQualificationSelectedIndex={setQualificationSelectedIndex}
+                isLastCategory={i === categoryList.length - 1}
+                icon={categoryItem?.icon}
+                itemLength={categoryList?.length}
+              />
+            ))}
+            <Box
+              component={"div"}
+              sx={{
+                position: "absolute",
+                left: "0",
+                right: 0,
+                height: "0.05rem",
+                background: "#d9d9d9",
+                top: "50%",
+                zIndex: "-2",
+              }}
+            />
+          </Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            sx={{
+              top: getResposiveDimentions("0px", "250%"),
+              left: getResposiveDimentions("0px", "0rem"),
+
+              zIndex: "10",
+              bottom: "10%",
+              display: "flex",
+              alignItems: "center",
+              height: { xs: "80%", md: "fit-content" },
+            }}
+          >
+            <Grid
+              item
+              container
+              xs={12}
+              className="qualification-list"
+              sx={{
+                borderRadius: "20px",
+                border: `1px solid ${themeColors?.primary}`,
+                background: "#fff",
+                padding: "0.5rem 10px",
+                marginTop: "10px",
+                overflowY: "scroll",
+                gap: "40px",
+                maxHeight: { xs: "100%", md: "50vh" },
+                height: { xs: "100%", md: "50vh" },
+              }}
+            >
+              {(
+                categoryList[qualificationSelectedIndex]?.qualificationList ||
+                []
+              ).map((qualification, i) => {
+                return (
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                    sx={{
+                      height: "fit-content",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Grid
+                      item
+                      container
+                      xs={8}
+                      lg={6}
+                      sx={{ flexDirection: "column" }}
+                    >
+                      <Typography
+                        component="h1"
+                        sx={{
+                          fontSize: getResposiveDimentions("20px", "23px"),
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {qualification?.degree}
+                      </Typography>
+                      <Typography
+                        component="h1"
+                        sx={{
+                          fontSize: getResposiveDimentions("16px", "18px"),
+                          fontWeight: "200",
+                          color: "#515357",
+                        }}
+                      >
+                        {qualification?.education}
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      container
+                      item
+                      xs={4}
+                      lg={6}
+                      sx={{
+                        justifyContent: "right",
+                      }}
+                    >
+                      <Grid
+                        item
+                        container
+                        xs={3}
+                        sx={{
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography
+                          compnent="p"
+                          sx={{
+                            fontSize: getResposiveDimentions("12px", "14px"),
+                            fontWeight: "200",
+                          }}
+                        >
+                          {qualification?.stared?.year}
+                        </Typography>
+                        <Typography
+                          compnent="p"
+                          sx={{
+                            fontSize: getResposiveDimentions("10px", "12px"),
+                            fontWeight: "200",
+                            color: "#6b6b6b",
+                          }}
+                        >
+                          {qualification?.stared?.month}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        container
+                        xs={6}
+                        sx={{ flexDirection: "column", alignItems: "center" }}
+                      >
+                        <Typography
+                          compnent="p"
+                          sx={{
+                            fontSize: getResposiveDimentions("12px", "14px"),
+                            fontWeight: "200",
+                          }}
+                        >
+                          {qualification?.ended?.year}
+                        </Typography>
+                        <Typography
+                          compnent="p"
+                          sx={{
+                            fontSize: getResposiveDimentions("10px", "12px"),
+                            fontWeight: "200",
+                            color: "#6b6b6b",
+                          }}
+                        >
+                          {qualification?.ended?.month}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    <Grid item container xs={12} lg={10}>
+                      <Typography
+                        component="p"
+                        sx={{
+                          fontSize: getResposiveDimentions("14px", "16px"),
+                          letterSpacing: "-0.5px",
+                          margin: "1rem 0px",
+                        }}
+                      >
+                        {qualification?.experience}
+                      </Typography>
+                    </Grid>
+                    <Grid item container xs={12} justifyContent="center">
+                      {/* <Box
+                      component="div"
+                      sx={{
+                        width: "80%",
+                        height: "0.1rem",
+                        background: "#e5e5e5",
+                        display:
+                          qualificationList.length - 1 === i ? "none" : "block",
+                      }}
+                    /> */}
+                    </Grid>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
       <Grid
         container
@@ -715,7 +948,6 @@ function AboutSection() {
         sx={{
           height: getResposiveDimentions("40vh", "80vh"),
           position: "relative",
-          justifyContent: "right",
           marginTop: getResposiveDimentions("50vh", "0px"),
           display: getResposiveDimentions("none", "flex"),
         }}
@@ -726,11 +958,7 @@ function AboutSection() {
           style={{
             display: "block",
             position: "absolute",
-            top: "50%",
-            left: "50%",
-            minHeight: "60%",
-            minWidth: "60%",
-            transform: "translate(-50%, -50%)",
+
             filter: " grayscale(100%)",
             objectFit: "contain",
           }}
@@ -762,7 +990,6 @@ function AboutCard({
   itemLength,
 }) {
   const [isQualificationListOpen, setIsQualificationListOpen] = useState(false);
-  console.log(itemLength);
   const height = (100 - 5 * itemLength) / itemLength;
   useEffect(() => {
     setIsQualificationListOpen(qualificationSelectedIndex === index);
@@ -772,244 +999,48 @@ function AboutCard({
   };
 
   return (
-    <Grid
-      item
-      container
-      xs={3}
-      lg={12}
+    <Box
+      variant="contained"
+      onClick={handleTitleClick}
       sx={{
-        flexDirection: "column",
-        height: "fit-content",
+        backgroundColor: isQualificationListOpen
+          ? themeColors?.projectViewCtaBtn
+          : "#a1a1a1",
+        color: isQualificationListOpen ? "#fff" : "##8b8b8b",
+        padding: getResposiveDimentions("5px 4px", "2px 5px"),
+        textTransform: "capitalize",
+        display: "flex",
+        gap: getResposiveDimentions("3px", "10px"),
+        alignItems: getResposiveDimentions("center", "center"),
+        justifyContent: "center",
+        ":hover": {
+          backgroundColor: themeColors?.projectViewCtaBtn,
+        },
+        cursor: "pointer",
+        borderRadius: "5px",
+        padding: "0.5rem",
       }}
-      justifyContent="center"
     >
       <Box
-        variant="contained"
-        onClick={handleTitleClick}
         sx={{
-          backgroundColor: isQualificationListOpen
-            ? themeColors?.projectViewCtaBtn
-            : "#a4a4a4",
-          color: isQualificationListOpen ? "#fff" : "##8b8b8b",
-          padding: getResposiveDimentions("5px 4px", "2px 5px"),
-          textTransform: "capitalize",
-          maxWidth: "5rem !important",
-          display: "flex",
-          gap: getResposiveDimentions("3px", "5px"),
-          alignItems: getResposiveDimentions("start", "center"),
-          justifyContent: "center",
-          ":hover": {
-            backgroundColor: themeColors?.projectViewCtaBtn,
-          },
+          width: getResposiveDimentions("20px", "25px"),
+          height: getResposiveDimentions("20px", "25px"),
+          position: "relative",
           cursor: "pointer",
-          borderRadius: "5px",
         }}
       >
-        <Box
-          sx={{
-            width: getResposiveDimentions("20px", "20px"),
-            height: getResposiveDimentions("20px", "20px"),
-            position: "relative",
-            cursor: "pointer",
-          }}
-        >
-          <Image fill src={icon} style={{}} />
-        </Box>
-        <Typography
-          component="h1"
-          sx={{
-            fontSize: getResposiveDimentions(
-              "14px",
-              themeFontSize?.secondaryCta
-            ),
-            fontWeight: "600",
-          }}
-        >
-          {category}
-        </Typography>
+        <Image fill src={icon} style={{}} />
       </Box>
-
-      <Grid
-        container
-        item
-        xs={12}
+      <Typography
+        component="h1"
         sx={{
-          position: "absolute",
-          top: getResposiveDimentions("0px", "10%"),
-          right: getResposiveDimentions("0px", "-6.3rem"),
-
-          zIndex: "10",
-          bottom: "10%",
-          display: "flex",
-          alignItems: "center",
-          height: { xs: "80%", md: "fit-content" },
+          fontSize: getResposiveDimentions("14px", themeFontSize?.secondaryCta),
+          fontWeight: "500",
         }}
       >
-        <Grid
-          item
-          container
-          xs={12}
-          className="qualification-list"
-          sx={{
-            borderRadius: "20px",
-            border: isQualificationListOpen
-              ? `1px solid ${themeColors?.primary}`
-              : "none",
-            background: "#fff",
-            padding: isQualificationListOpen ? "0.5rem 10px" : "0px",
-            marginTop: isQualificationListOpen ? "10px" : "0px",
-            overflowY: "scroll",
-            gap: "40px",
-            maxHeight: isQualificationListOpen
-              ? { xs: "100%", md: "50vh" }
-              : "0px",
-            height: isQualificationListOpen
-              ? { xs: "100%", md: "50vh" }
-              : "0px",
-          }}
-        >
-          {(qualificationList || []).map((qualification, i) => {
-            return (
-              <Grid
-                item
-                container
-                xs={12}
-                sx={{ height: "fit-content", justifyContent: "space-between" }}
-              >
-                <Grid
-                  item
-                  container
-                  xs={8}
-                  lg={6}
-                  sx={{ flexDirection: "column" }}
-                >
-                  <Typography
-                    component="h1"
-                    sx={{
-                      fontSize: getResposiveDimentions("20px", "23px"),
-                      textTransform: "capitalize",
-                    }}
-                  >
-                    {qualification?.degree}
-                  </Typography>
-                  <Typography
-                    component="h1"
-                    sx={{
-                      fontSize: getResposiveDimentions("16px", "18px"),
-                      fontWeight: "200",
-                      color: "#515357",
-                    }}
-                  >
-                    {qualification?.education}
-                  </Typography>
-                </Grid>
-                <Grid
-                  container
-                  item
-                  xs={4}
-                  lg={6}
-                  sx={{
-                    justifyContent: "right",
-                  }}
-                >
-                  <Grid
-                    item
-                    container
-                    xs={3}
-                    sx={{
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography
-                      compnent="p"
-                      sx={{
-                        fontSize: getResposiveDimentions("12px", "14px"),
-                        fontWeight: "200",
-                      }}
-                    >
-                      {qualification?.stared?.year}
-                    </Typography>
-                    <Typography
-                      compnent="p"
-                      sx={{
-                        fontSize: getResposiveDimentions("10px", "12px"),
-                        fontWeight: "200",
-                        color: "#6b6b6b",
-                      }}
-                    >
-                      {qualification?.stared?.month}
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    item
-                    container
-                    xs={6}
-                    sx={{ flexDirection: "column", alignItems: "center" }}
-                  >
-                    <Typography
-                      compnent="p"
-                      sx={{
-                        fontSize: getResposiveDimentions("12px", "14px"),
-                        fontWeight: "200",
-                      }}
-                    >
-                      {qualification?.ended?.year}
-                    </Typography>
-                    <Typography
-                      compnent="p"
-                      sx={{
-                        fontSize: getResposiveDimentions("10px", "12px"),
-                        fontWeight: "200",
-                        color: "#6b6b6b",
-                      }}
-                    >
-                      {qualification?.ended?.month}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid item container xs={12} lg={10}>
-                  <Typography
-                    component="p"
-                    sx={{
-                      fontSize: getResposiveDimentions("14px", "16px"),
-                      letterSpacing: "-0.5px",
-                      margin: "1rem 0px",
-                    }}
-                  >
-                    {qualification?.experience}
-                  </Typography>
-                </Grid>
-                <Grid item container xs={12} justifyContent="center">
-                  <Box
-                    component="div"
-                    sx={{
-                      width: "80%",
-                      height: "0.1rem",
-                      background: "#e5e5e5",
-                      display:
-                        qualificationList.length - 1 === i ? "none" : "block",
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Grid>
-      <Box
-        component="div"
-        sx={{
-          width: "2px",
-          height: `${height}vh`,
-          background: "#f3f2f2",
-          display: getResposiveDimentions(
-            "none",
-            connectionLine ? "block" : "none"
-          ),
-        }}
-      />
-    </Grid>
+        {category}
+      </Typography>
+    </Box>
   );
 }
 function SkillSection() {
@@ -1091,8 +1122,10 @@ function SkillSection() {
       item
       container
       xs={12}
-      className="scroll-snap-on"
-      sx={{ justifyContent: "space-around" }}
+      component={"section"}
+      id="skills"
+      // className="scroll-snap-on"
+      sx={{ justifyContent: "space-around", gap: "1rem" }}
     >
       <Header title="Skill" subTitle="Explore my" />
       {(skillSet || []).map((skill, i) => {
@@ -1105,7 +1138,7 @@ function SkillSection() {
             sx={{
               border: "1px solid",
               borderRadius: "20px",
-              height: getResposiveDimentions("25%", "40%"),
+              minHeight: getResposiveDimentions("25vh", "30vh"),
               justifyContent: "center",
             }}
           >
@@ -1180,6 +1213,8 @@ function SkillSection() {
 }
 function Contact() {
   const [formValues, setFormValues] = useState({});
+  const [formValuesError, setFormValuesError] = useState({});
+
   const formInputs = [
     {
       lable: "name*",
@@ -1205,7 +1240,7 @@ function Contact() {
   ];
   const myHighlights = [
     {
-      title: "1 year experienced",
+      title: "2 year experienced",
       subtitle: "software developer",
     },
     {
@@ -1217,12 +1252,68 @@ function Contact() {
       subtitle: "graduate",
     },
   ];
+  const [submitted, setSubmitted] = useState(false);
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formValues.name) errors.name = "Name is required";
+    if (
+      formValues.email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValues.email)
+    ) {
+      errors.email = "Invalid email format";
+    }
+    if (!formValues.feedback) errors.feedback = "Feedback is required";
+    setFormValuesError(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleFormSubmit = async () => {
+    if (!validateForm()) return;
+
+    try {
+      await axios.post("/api/contact", formValues);
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Form submission failed", err);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <Grid
+        item
+        xs={12}
+        component={"section"}
+        id="contact"
+        sx={{
+          textAlign: "center",
+          py: 5,
+          height: "50vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h5" color="primary">
+          Thank you for reaching out!
+        </Typography>
+        <Typography>I'll get back to you soon. 🚀</Typography>
+      </Grid>
+    );
+  }
   return (
     <Grid
       item
       container
-      className="scroll-snap-on"
-      sx={{ justifyContent: "space-around", alignItems: "start", gap: "1rem" }}
+      // className="scroll-snap-on"
+      sx={{
+        justifyContent: "space-around",
+        alignItems: "start",
+        gap: "1rem",
+        marginBottom: "2rem",
+      }}
     >
       <Grid item container xs={12} sx={{ height: "fit-content" }}>
         <Header subTitle="you can" title="Contact" />
@@ -1281,6 +1372,7 @@ function Contact() {
                   lable={input?.lable}
                   type={input?.type}
                   value={formValues[input?.value]}
+                  error={formValuesError[input?.value]}
                   handleonChange={(value) =>
                     setFormValues({ ...formValues, [input?.value]: value })
                   }
@@ -1289,7 +1381,11 @@ function Contact() {
               </Grid>
             );
           })}
-          <Button variant="contained" sx={{ width: "100%" }}>
+          <Button
+            variant="contained"
+            sx={{ width: "100%" }}
+            onClick={handleFormSubmit}
+          >
             Send
           </Button>
         </Grid>
